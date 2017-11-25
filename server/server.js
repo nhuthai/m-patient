@@ -77,9 +77,10 @@ app.post('/webhook', (req, res) => {
 function handleMessage(sender_psid, received_message) {
     let response;
     if (received_message.nlp && received_message.nlp.entities) {
-        console.log(entities);
+        
         const entities = received_message.nlp.entities;
-
+        console.log(entities);
+        
         if (entities.intent.length > 0) {
             const intent = entities.intent[0];
             if (intent.value === "talk_action" && intent.confidence > 0.6)
