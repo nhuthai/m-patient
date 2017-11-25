@@ -2,6 +2,9 @@ const express = require('express');
 const request = require('request');
 const bodyParser = require('body-parser');
 
+const { mongoose } = require('./db/mongoose');
+const { Patient } = require('./models/patient');
+
 const app = express();
 
 const port = process.env.PORT || 3000;
@@ -55,7 +58,9 @@ app.post('/webhook', (req, res) => {
 
             // Check if the event is a message or postback and
             // pass the event to the appropriate handler function
-            if (webhook_event.message) {
+            if (webhook_event.nlp && webhook_event.nlp.entities) {
+                handleNLP(sender_psid, webhook_event.nlp.entities);
+            } else if (webhook_event.message) {
                 handleMessage(sender_psid, webhook_event.message);
             } else if (webhook_event.postback) {
                 handlePostback(sender_psid, webhook_event.postback);
@@ -69,8 +74,24 @@ app.post('/webhook', (req, res) => {
         // Return a '404 Not Found' if event is not from a page subscription
         res.sendStatus(404);
     }
-
 });
+
+function handleNLP(sender_psid, nlp) {
+    let response;
+
+    // Check if the message contains text
+    if (nlp.intent.length > 0) {
+        const intent = nlp.intent[0];
+        if (intent.value === "talk_action" && intent.confidence > 0.6)
+        // Create the payload for a basic text message
+        response = {
+            "text": `Ok, set up the chat with ${nlp.nickname[0].value}`;
+        };
+    }
+
+    // Sends the response message
+    callSendAPI(sender_psid, response);
+}
 
 function handleMessage(sender_psid, received_message) {
     let response;
