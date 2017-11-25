@@ -21,13 +21,13 @@ const PatientSchema = new mongoose.Schema({
     }
 });
 
-const Patient = mongoose.model('Patient', PatientSchema);
-
 PatientSchema.statics.findByFbId = function(fbId) {
     return this.findOne({fbId})
                 .then((patient) => {
                     return !!patient;
                 });
 };
+
+const Patient = mongoose.model('Patient', PatientSchema);
 
 module.exports = { Patient };
