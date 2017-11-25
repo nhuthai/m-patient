@@ -1,14 +1,15 @@
 const request = require('request');
+const _ = require('lodash');
 
 const chatbotApi = {
     handleMessage: function(senderPSID, receivedMessage) {
         let response;
-        if (receivedMessage.nlp && receivedMessage.nlp.entities) {
+        if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
             
             const entities = receivedMessage.nlp.entities;
             console.log(entities);
             
-            if (entities.intent.length > 0) {
+            if (entities.intent && entities.intent.length > 0) {
                 const intent = entities.intent[0];
                 if (intent.value === "talk_action" && intent.confidence > 0.6)
                     // Create the payload for a basic text message
