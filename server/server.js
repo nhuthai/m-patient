@@ -3,7 +3,7 @@ const request = require('request');
 const bodyParser = require('body-parser');
 
 const { mongoose } = require('./db/mongoose');
-const { Patient } = require('./models/patient');
+
 const chatbotAPI = require('./chatbot/chatbotAPI');
 const app = express();
 
@@ -50,7 +50,6 @@ app.post('/webhook', (req, res) => {
             // Get the webhook event. entry.messaging is an array, but 
             // will only ever contain one event, so we get index 0
             let webhook_event = entry.messaging[0];
-            console.log(webhook_event);
 
             // Get the sender PSID
             let sender_psid = webhook_event.sender.id;

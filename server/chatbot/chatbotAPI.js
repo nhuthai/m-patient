@@ -1,8 +1,24 @@
 const request = require('request');
+const { Patient } = require('./../models/patient');
 const _ = require('lodash');
 
 const chatbotApi = {
     handleMessage: function (senderPSID, receivedMessage) {
+
+        if (!Patient.findByFbId(senderPSID)) {
+            const patient = new Patient({
+                fbId: senderPSID
+            });
+
+            patient.save()
+                    .then((doc) => {
+                        console.log('Save successfully', doc);
+                    })
+                    .catch((err) => {
+                        console.lof('Unable to save', err);
+                    });
+        }
+
         let response;
         if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
 
@@ -11,11 +27,12 @@ const chatbotApi = {
 
             if (entities.intent && entities.intent.length > 0) {
                 const intent = entities.intent[0];
-                if (intent.value === "talk_action" && intent.confidence > 0.6)
+                if (intent.value === "talk_action" && intent.confidence > 0.6) {
                     // Create the payload for a basic text message
                     response = {
                         "text": `Ok, set up the chat with ${entities.person[0].value}`
                     };
+                }
             }
         }
         else {
@@ -36,8 +53,8 @@ const chatbotApi = {
 
                                     {
                                         "type": "postback",
-                                        "title": "Connect with you with someone",
-                                        "payload": "CONNECT_PAYLOAD>"
+                                        "title": "Connect you with someone",
+                                        "payload": "CONNECT_PAYLOAD"
                                     }
                                 ]
                             }

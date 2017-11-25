@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Patient = mongoose.model('Patient', {
+const PatientSchema = new mongoose.Schema({
     fbId: {
         type: String,
         required: true
@@ -20,5 +20,14 @@ const Patient = mongoose.model('Patient', {
         type: Number
     }
 });
+
+const Patient = mongoose.model('Patient', PatientSchema);
+
+PatientSchema.statics.findByFbId = function(fbId) {
+    return this.findOne({fbId})
+                .then((patient) => {
+                    return !!patient;
+                });
+};
 
 module.exports = { Patient };
