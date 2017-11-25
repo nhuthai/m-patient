@@ -99,13 +99,13 @@ const chatbotApi = {
     },
 
     // Handles messaging_postbacks events
-    handlePostback: function (sender_psid, received_postback) {
+    handlePostback: function (senderPSID, received_postback) {
         let response;
 
         console.log(received_postback);
-        
+
         if (received_postback.payload === 'CONNECT_PAYLOAD') {
-            Patient.findMatchingPatients(sender_psid)
+            Patient.findMatchingPatients(senderPSID)
                 .then((patients) => {
                     if (!patients) {
                         return;
