@@ -85,7 +85,7 @@ function handleNLP(sender_psid, nlp) {
         if (intent.value === "talk_action" && intent.confidence > 0.6)
         // Create the payload for a basic text message
         response = {
-            "text": `Ok, set up the chat with ${nlp.nickname[0].value}`;
+            "text": `Ok, set up the chat with ${nlp.nickname[0].value}`
         };
     }
 
