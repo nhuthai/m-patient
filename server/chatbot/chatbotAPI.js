@@ -43,12 +43,12 @@ const chatbotApi = {
                             }
                         }
                     };
-                }
-                response = {
-                    "text": `You said: "${receivedMessage.text}"`
-                };
+                } else {
+                    response = {
+                        "text": `You said: "${receivedMessage.text}"`
+                    };
+                } 
             }
-
         }
 
         // Sends the response message
