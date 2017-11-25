@@ -60,7 +60,7 @@ app.post('/webhook', (req, res) => {
             if (webhook_event.message) {
                 chatbotAPI.handleMessage(sender_psid, webhook_event.message);
             } else if (webhook_event.postback) {
-                handlePostback(sender_psid, webhook_event.postback);
+                chatbotAPI.handlePostback(sender_psid, webhook_event.postback);
             }
         });
 
@@ -72,14 +72,6 @@ app.post('/webhook', (req, res) => {
         res.sendStatus(404);
     }
 });
-
-
-// Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
-    if (received_postback) {
-        console.log(received_postback);
-    }
-}
 
 app.listen(port, () => {
     console.log(`Server is up on port ${port}`);

@@ -6,21 +6,21 @@ const chatbotApi = {
     handleMessage: function (senderPSID, receivedMessage) {
 
         Patient.findByFbId(senderPSID)
-                .then((result) => {
-                    if (!result) {
-                        const patient = new Patient({
-                            fbId: senderPSID
-                        });
+            .then((result) => {
+                if (!result) {
+                    const patient = new Patient({
+                        fbId: senderPSID
+                    });
 
-                        return patient.save();
-                    }
-                })
-                .then((doc) => {
-                    console.log('Save successfully', doc);
-                })
-                .catch((err) => {
-                    console.lof('Unable to save', err);
-                });
+                    return patient.save();
+                }
+            })
+            .then((doc) => {
+                console.log('Save successfully', doc);
+            })
+            .catch((err) => {
+                console.lof('Unable to save', err);
+            });
 
         let response;
         if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
@@ -67,7 +67,7 @@ const chatbotApi = {
                     response = {
                         "text": `You said: "${receivedMessage.text}"`
                     };
-                } 
+                }
             }
         }
 
@@ -96,6 +96,55 @@ const chatbotApi = {
                 console.error("Unable to send message:" + err);
             }
         });
+    },
+
+    // Handles messaging_postbacks events
+    handlePostback: function (sender_psid, received_postback) {
+        let response;
+
+        console.log(received_postback);
+        
+        if (received_postback.payload === 'CONNECT_PAYLOAD') {
+            Patient.findMatchingPatients(sender_psid)
+                .then((patients) => {
+                    if (!patients) {
+                        return;
+                    }
+
+                    response = {
+                        "attachment": {
+                            "type": "template",
+                            "payload": {
+                                "template_type": "generic",
+                                "elements": this.buildListReponse(patients)
+                            }
+                        }
+                    };
+                });
+        }
+
+        // Sends the response message
+        this.callSendAPI(senderPSID, response);
+    },
+
+    buildListReponse: function(list = []) {
+        return list.map((item) => {
+            return {
+                "title": item.nickname,
+                "image_url": "https://petersfancybrownhats.com/company_image.png",
+                "subtitle": "We\'ve got the right hat for everyone.",
+                "buttons": [
+                    {
+                        "type": "postback",
+                        "title": "Start Chatting",
+                        "payload": {
+                            type: "CHAT_PAYLOAD",
+                            partnerId: item.fbId
+                        }
+                    }
+                ]
+            };
+        })
     }
 }
 

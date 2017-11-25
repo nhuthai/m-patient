@@ -18,6 +18,9 @@ const PatientSchema = new mongoose.Schema({
     },
     personalityScore: {
         type: Number
+    },
+    chatWith: {
+        type: String
     }
 });
 
@@ -27,6 +30,19 @@ PatientSchema.statics.findByFbId = function(fbId) {
                     return !!patient;
                 });
 };
+
+PatientSchema.statics.findMatchingPatients = function(fbId) {
+    return this.findById(fbId)
+                .then((patient) => {
+                    if (!patient) {
+                        return Promise.reject();
+                    }
+
+                    return this.find({
+                        disease: patient.disease
+                    });
+                });
+}
 
 const Patient = mongoose.model('Patient', PatientSchema);
 
