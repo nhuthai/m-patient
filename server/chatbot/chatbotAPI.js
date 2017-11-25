@@ -5,19 +5,22 @@ const _ = require('lodash');
 const chatbotApi = {
     handleMessage: function (senderPSID, receivedMessage) {
 
-        if (!Patient.findByFbId(senderPSID)) {
-            const patient = new Patient({
-                fbId: senderPSID
-            });
+        Patient.findByFbId(senderPSID)
+                .then((result) => {
+                    if (!result) {
+                        const patient = new Patient({
+                            fbId: senderPSID
+                        });
 
-            patient.save()
-                    .then((doc) => {
-                        console.log('Save successfully', doc);
-                    })
-                    .catch((err) => {
-                        console.lof('Unable to save', err);
-                    });
-        }
+                        return patient.save();
+                    }
+                })
+                .then((doc) => {
+                    console.log('Save successfully', doc);
+                })
+                .catch((err) => {
+                    console.lof('Unable to save', err);
+                });
 
         let response;
         if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
