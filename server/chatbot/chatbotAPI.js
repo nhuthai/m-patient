@@ -28,7 +28,7 @@ const chatbotApi = {
         }
     
         // Sends the response message
-        callSendAPI(senderPSID, response);
+        this.callSendAPI(senderPSID, response);
     },
 
     callSendAPI: function(senderPSID, response) {
