@@ -77,6 +77,7 @@ app.post('/webhook', (req, res) => {
 function handleMessage(sender_psid, received_message) {
     let response;
     if (received_message.nlp && received_message.nlp.entities) {
+        console.log(entities);
         const entities = received_message.nlp.entities;
 
         if (entities.intent.length > 0) {
@@ -84,7 +85,7 @@ function handleMessage(sender_psid, received_message) {
             if (intent.value === "talk_action" && intent.confidence > 0.6)
                 // Create the payload for a basic text message
                 response = {
-                    "text": `Ok, set up the chat with ${entities.nickname[0].value}`
+                    "text": `Ok, set up the chat with ${entities.person[0].value}`
                 };
         }
     }
