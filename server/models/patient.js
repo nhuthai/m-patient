@@ -17,7 +17,7 @@ const Patient = mongoose.model('Patient', {
         type: String
     },
     personalityScore: {
-        type: number
+        type: Number
     }
 });
 
