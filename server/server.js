@@ -77,7 +77,9 @@ app.post('/webhook', (req, res) => {
 
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
-
+    if (received_postback) {
+        console.log(received_postback);
+    }
 }
 
 app.listen(port, () => {
