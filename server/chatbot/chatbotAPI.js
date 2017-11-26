@@ -177,10 +177,36 @@ const chatbotApi = {
                 console.log(err);
             });
         } else if (payload === 'SEE_NEWS') {
-            newsFetcher.fetch((news) => {
-
-            });
+            this.displayNews();
         }
+    },
+
+    displayNews: function () {
+        newsFetcher.fetch()
+            .then((news) => {
+                let response = {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": news.map((theNew) => {
+                                return {
+                                    "title": theNew.name,
+                                    "subtitle": theNew.snippet,
+                                    "buttons": [
+                                        {
+                                            "type": "web_url",
+                                            "url": theNew.url,
+                                            "title": "View Website"
+                                        }
+                                    ]
+                                }
+                            })
+                        }
+                    }
+                };
+            });
+
     },
 
     findMatchingPatients: function (user) {

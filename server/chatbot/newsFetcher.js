@@ -10,7 +10,7 @@ const newsFetcher = {
 
         return axios.get(address, config)
             .then((response) => {
-                console.log(response.data);
+                return response.data.value;
             })
             .catch((err) => {
                 console.log(err);
