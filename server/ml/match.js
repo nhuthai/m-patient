@@ -36,6 +36,7 @@ function match_psy(arr, psyScore){
 }
 
 function match_disease(arr, disease){
+    console.log('arr', arr);
     pattern = disease;
     var filtered_arr = arr.filter(checkDisease);
     if (filtered_arr.length > 0){
