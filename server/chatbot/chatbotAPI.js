@@ -224,8 +224,8 @@ const chatbotApi = {
         }
     },
 
-    findMatchingPatients: function() {
-        Patient.findMatchingPatients(user.fbId);
+    findMatchingPatients: function(userId) {
+        Patient.findMatchingPatients(userId);
     },
 
     buildListReponse: function (list) {
