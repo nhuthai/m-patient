@@ -177,11 +177,11 @@ const chatbotApi = {
                 console.log(err);
             });
         } else if (payload === 'SEE_NEWS') {
-            this.displayNews();
+            this.displayNews(user);
         }
     },
 
-    displayNews: function () {
+    displayNews: function (user) {
         newsFetcher.fetch()
             .then((news) => {
                 let response = {
@@ -205,6 +205,8 @@ const chatbotApi = {
                         }
                     }
                 };
+
+                this.callSendAPI(user.fbId, response);
             })
             .catch((err) => {
                 console.log(err);
