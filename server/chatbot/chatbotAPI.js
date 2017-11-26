@@ -98,23 +98,26 @@ const chatbotApi = {
 
         if (payload === 'CONNECT_PAYLOAD') {
             response = {
-                "payload": {
-                    "template_type":"generic",
-                    "elements":[
-                       {
-                        "title":"<TITLE_TEXT>",
-                        "image_url":"<IMAGE_URL_TO_DISPLAY>",
-                        "subtitle":"<SUBTITLE_TEXT>",
-                        "buttons":[
-                            {
-                                "type":"postback",
-                                "title":"Start Chatting",
-                                "payload":"DEVELOPER_DEFINED_PAYLOAD"
-                              }  
-                        ]      
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type":"generic",
+                        "elements":[
+                           {
+                            "title":"<TITLE_TEXT>",
+                            "image_url":"<IMAGE_URL_TO_DISPLAY>",
+                            "subtitle":"<SUBTITLE_TEXT>",
+                            "buttons":[
+                                {
+                                    "type":"postback",
+                                    "title":"Start Chatting",
+                                    "payload":"DEVELOPER_DEFINED_PAYLOAD"
+                                  }  
+                            ]      
+                          }
+                        ]
                       }
-                    ]
-                  }
+                }
             };
 
             this.callSendAPI(user.fbId, response);
