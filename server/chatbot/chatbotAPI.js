@@ -8,6 +8,8 @@ const newsFetcher = require('./newsFetcher');
 
 const chatbotApi = {
     handleMessage: function (user, receivedMessage) {
+        console.log(receivedMessage);
+        
         let response;
 
         if (user.chatWith) {
