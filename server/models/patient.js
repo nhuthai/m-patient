@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const { server } = require('./../ml/server');
+const server = require('./../ml/server');
 const _ = require('lodash');
 
 const PatientSchema = new mongoose.Schema({
