@@ -56,9 +56,7 @@ const chatbotApi = {
                                     {
                                         "type": "postback",
                                         "title": "Connect you with someone",
-                                        "payload": {
-                                            action: "CONNECT_PAYLOAD"
-                                        }
+                                        "payload": "CONNECT_PAYLOAD"
                                     }
                                 ]
                             }
@@ -104,9 +102,8 @@ const chatbotApi = {
         let response;
 
         console.log(received_postback);
-        const { payload } = received_postback;
 
-        if (payload && payload.action === 'CONNECT_PAYLOAD') {
+        if (received_postback.payload === 'CONNECT_PAYLOAD') {
             Patient.findMatchingPatients(senderPSID)
                 .then((patients) => {
                     if (!patients) {
