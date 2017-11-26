@@ -232,7 +232,7 @@ const chatbotApi = {
                         "type": "template",
                         "payload": {
                             "template_type": "generic",
-                            "elements": matchingPatients.map((patient) => {
+                            "elements": patients.map((patient) => {
                                 return {
                                     "title": patient.nickname,
                                     "subtitle": "He is a good match for you",
