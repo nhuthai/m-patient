@@ -11,12 +11,16 @@ const chatbotApi = {
         let response;
 
         if (user.chatWith) {
-            response = {
-                "text": `${user.chatWith}> ${receivedMessage.text}`
-            };
+            Patient.findOne({
+                fbId: user.chatWith
+            }).then((partner) => {
+                response = {
+                    "text": `${partner.nickname}> ${receivedMessage.text}`
+                };
 
-            this.callSendAPI(user.chatWith, response);
-            return;
+                this.callSendAPI(user.chatWith, response);
+                return;
+            });
         }
         else if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
 
@@ -108,51 +112,6 @@ const chatbotApi = {
             }
 
             this.findMatchingPatients(user);
-            /* Patient.findMatchingPatients(user.fbId)
-                .then((patients) => {
-                    if (!patients || patients.length === 0) {
-                        return;
-                    }
-
-                    response = {
-                        "attachment": {
-                            "type": "template",
-                            "payload": {
-                                "template_type": "generic",
-                                "elements": [
-                                    {
-                                        "title": "Welcome to Peter\'s Hats",
-                                        "subtitle": "We\'ve got the right hat for everyone.",
-                                        "buttons": [
-                                            {
-                                                "type": "postback",
-                                                "title": "Start Chatting",
-                                                "payload": "CHAT " + patients[0].fbId
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": "Another person",
-                                        "subtitle": "We\'ve got the right hat for everyone.",
-                                        "image_url": "https://image.ibb.co/dsNANm/7_test.png",
-                                        "buttons": [
-                                            {
-                                                "type": "postback",
-                                                "title": "Start Chatting",
-                                                "payload": "CHAT " + patients[0].fbId
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        }
-                    };
-
-                    // Sends the response message
-                    this.callSendAPI(user.fbId, response);
-                }).catch((err) => {
-                    console.log(err);
-                }); */
         } else if (_.startsWith(payload, "CHAT")) {
             const partnerId = payload.split(" ")[1];
 
@@ -228,7 +187,7 @@ const chatbotApi = {
         Patient.findMatchingPatients(user)
             .then((patients) => {
                 console.log('Returned', patients);
-                
+
                 response = {
                     "attachment": {
                         "type": "template",
