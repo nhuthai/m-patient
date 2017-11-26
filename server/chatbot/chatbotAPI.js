@@ -114,7 +114,7 @@ const chatbotApi = {
                                     {
                                         "title": "Welcome to Peter\'s Hats",
                                         "subtitle": "We\'ve got the right hat for everyone.",
-                                        "image_url": "https://lh3.googleusercontent.com/lPyBqqsCQ9MObJJk-WA67WpOre3mMaEV_FY_CKkpypXfBD1y7OFIKtPdidrQTvBusNnobdf0LH0oLLi_CPD4ISXEvsbIIAbq4cBrBK0HeFUqpoH792cz0sXLBAou_UcMfzEc8vtdN239BqveA38VvimvMam69TEIU_HoncSSGE5lkmF0n1tYOOytBBAsotE82YTqbJnMeQqVTknRLC2xkdP04GGEZenAFSzaMqm-_yTeQFxuufA4eFkHh2_jwRvoLyFONe_JgcCV1dqofd9wqvqwB-t4Gi0YcpazdLZ58TV6mLimgjY6bZ3NBEbkfiUMiaOOJ3dImmEylOGiBcavvHBv5lYLzyEQvY1T-LTW4p1RphskBGWE6ECwSaBZR4MA5gZEq5JDYnaOeC7y0CQouyEajFVH-z5eioKwFuofslXFeNoyMUuYjIid4X8b1RLZPfKBwObB9uNwKPoYM3TaP4uO_Iny7Iu0FJhaRr8UxvaN0y4YFJmycMB3M_SriC-iQMjtWvNWAkMZUgrD6V9CkzF7-NCkjzBqGKYQJ-VS6wyoIE_Qzn-tCfPSn99k1FyfvKiD5X-n11FfvToPpYQurIoYW5Llsb5bREf5-lPWRhyOs9UAyv6UYrd3cfTv_tifiUlWaW6xWvvfR33UY77TB-FQ6iTjhsOTFEM=w307-h126-no",
+                                        "image_url": "https://image.ibb.co/g2XtOR/7_test.png",
                                         "buttons": [
                                             {
                                                 "type": "postback",
@@ -126,6 +126,7 @@ const chatbotApi = {
                                     {
                                         "title": "Another person",
                                         "subtitle": "We\'ve got the right hat for everyone.",
+                                        "image_url": "https://image.ibb.co/g2XtOR/7_test.png",
                                         "buttons": [
                                             {
                                                 "type": "postback",
