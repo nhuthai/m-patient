@@ -146,11 +146,13 @@ const chatbotApi = {
                     };
 
                     console.log(response);
+
+                    // Sends the response message
+                    this.callSendAPI(senderPSID, response);
+                }).catch((err) => {
+                    console.log(err);
                 });
         }
-
-        // Sends the response message
-        this.callSendAPI(senderPSID, response);
     },
 
     buildListReponse: function(list = []) {
