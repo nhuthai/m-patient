@@ -28,6 +28,9 @@ const PatientSchema = new mongoose.Schema({
     answers: {
         type: [Number],
         default: []
+    },
+    psyScore: {
+        type: String
     }
 });
 
