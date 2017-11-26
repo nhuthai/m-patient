@@ -32,7 +32,7 @@ PatientSchema.statics.findByFbId = function(fbId) {
 };
 
 PatientSchema.statics.findMatchingPatients = function(fbId) {
-    return this.findById(fbId)
+    return this.findByFbId(fbId)
                 .then((patient) => {
                     if (!patient) {
                         return Promise.reject();
