@@ -120,6 +120,8 @@ const chatbotApi = {
                             }
                         }
                     };
+
+                    console.log(response);
                 });
         }
 
