@@ -45,6 +45,8 @@ const chatbotApi = {
                             response = {
                                 "text": `I'm so sorry to hear that you have ${disease}. There are a couple things I can offer to you. Type 'Show me' to learn more`
                             };
+
+                            this.callSendAPI(user.fbId, response);
                         }).catch((err) => {
                             console.log(err);
                         });
@@ -87,8 +89,8 @@ const chatbotApi = {
             }
         }
 
-        // Sends the response message
-        this.callSendAPI(user.fbId, response);
+         // Sends the response message
+         this.callSendAPI(user.fbId, response);
     },
 
     callSendAPI: function (senderPSID, response) {
