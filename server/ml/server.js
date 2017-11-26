@@ -41,14 +41,14 @@ const server = {
         //testdata = serialize([2,3,1,3,1,2,2,1]);
         var pred = rf.predict(testdata, my_forest);
     
-        var user_data = [
+        /* var user_data = [
             { 'fb_id': 'Edward', 'disease' : 'lung cancer', 'psyScore': 'd' },
             { 'fb_id': 'Sharpe', 'disease' : 'lung cancer', 'psyScore': 'g' },
             { 'fb_id': 'And', 'disease' : 'parkinson', 'psyScore': 'g' },
             { 'fb_id': 'The', 'disease' : 'lung cancer', 'psyScore': 'b' },
             { 'fb_id': 'Magnetic', 'disease' : 'parkinson', 'psyScore': 'b' },
             { 'fb_id': 'Zeros', 'disease' : 'parkinson', 'psyScore': 'd' }
-        ];
+        ]; */
         user_data = match_disease(user_data, 'parkinson ');
         return match_psy(user_data, pred);
     }
