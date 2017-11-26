@@ -11,16 +11,35 @@ const chatbotApi = {
         console.log(receivedMessage);
 
         let response;
+        const partner = user.chatWith;
 
-        if (user.chatWith) {
+        if (receivedMessage.toLowerCase() === 'end conversation') {
+            Patient.findOneAndUpdate({
+                _id: user._id
+            }, {$set: {chatWith: null}}).then(() => {
+                return Patient.findOneAndUpdate({ fbId: partner}, {
+                    $set: {
+                        chatWith: null
+                    }
+                });
+            }).then((doc) => {
+                response = {
+                    "text": 'Conversation ended'
+                };
+    
+                this.callSendAPI(partner, response);
+                this.callSendAPI(user.fbId, response);
+            }).catch((err) => {
+                console.log(err);
+            });
+        } else if (user.chatWith) {
             response = {
                 "text": `${user.nickname}> ${receivedMessage.text}`
             };
 
             this.callSendAPI(user.chatWith, response);
             return;
-        }
-        else if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
+        } else if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
 
             const entities = receivedMessage.nlp.entities;
 
