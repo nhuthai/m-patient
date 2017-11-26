@@ -21,6 +21,10 @@ const PatientSchema = new mongoose.Schema({
     },
     chatWith: {
         type: String
+    },
+    answers: {
+        type: [Number],
+        default: []
     }
 });
 

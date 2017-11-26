@@ -2,6 +2,7 @@ const request = require('request');
 const _ = require('lodash');
 
 const templateGenerator = require('./templateGenerator');
+const questionGenerator = require('./questionGenerator');
 const { Patient } = require('./../models/patient');
 
 const chatbotApi = {
@@ -31,7 +32,7 @@ const chatbotApi = {
                         response = {
                             "text": `Ok, set up the chat with ${entities.person[0].value}`
                         };
-                    }    
+                    }
                 }
             }
         }
@@ -89,6 +90,12 @@ const chatbotApi = {
         });
     },
 
+    askQuestion: function (user) {
+        response = questionGenerator.generate(user.answers.length);
+
+        this.callSendAPI(user.fbId, response);
+    },
+
     // Handles messaging_postbacks events
     handlePostback: function (user, received_postback) {
         let response;
@@ -97,32 +104,12 @@ const chatbotApi = {
         const senderPSID = user.fbId;
 
         if (payload === 'CONNECT_PAYLOAD') {
-            response = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type":"generic",
-                        "elements":[
-                           {
-                            "title":"<TITLE_TEXT>",
-                            "image_url":"https://image.ibb.co/dsNANm/7_test.png>",
-                            "subtitle":"<SUBTITLE_TEXT>",
-                            "buttons":[
-                                {
-                                    "type":"postback",
-                                    "title":"Start Chatting",
-                                    "payload":"DEVELOPER_DEFINED_PAYLOAD"
-                                  }  
-                            ]      
-                          }
-                        ]
-                      }
-                }
-            };
+            if (user.answers.length !== 8) {
+                this.askQuestion(user);
+                return;
+            }
 
-            this.callSendAPI(user.fbId, response);
-
-            /* Patient.findMatchingPatients(user.fbId)
+            Patient.findMatchingPatients(user.fbId)
                 .then((patients) => {
                     if (!patients || patients.length === 0) {
                         return;
@@ -171,60 +158,73 @@ const chatbotApi = {
                     this.callSendAPI(user.fbId, response);
                 }).catch((err) => {
                     console.log(err);
-                }); */
+                });
         } else if (_.startsWith(payload, "CHAT")) {
             const partnerId = payload.split(" ")[1];
 
             Patient.findByFbId(partnerId)
-                    .then((partner) => {
-                        const buttons = [
-                            {
-                                "type": "postback",
-                                "title": "Accept",
-                                "payload": "ACCEPT " + senderPSID
-                            },
+                .then((partner) => {
+                    const buttons = [
+                        {
+                            "type": "postback",
+                            "title": "Accept",
+                            "payload": "ACCEPT " + senderPSID
+                        },
 
-                            {
-                                "type": "postback",
-                                "title": "Decline",
-                                "payload": "DECLINE " + senderPSID
-                            }
-                        ];
-                        response = {
-                            "attachment": templateGenerator.getButtonTemplate(`${user.nickname} wants to talk to you`, buttons)
-                        };
+                        {
+                            "type": "postback",
+                            "title": "Decline",
+                            "payload": "DECLINE " + senderPSID
+                        }
+                    ];
+                    response = {
+                        "attachment": templateGenerator.getButtonTemplate(`${user.nickname} wants to talk to you`, buttons)
+                    };
 
-                        this.callSendAPI(partnerId, response);
-                    })
-                    .catch(() => {
-                        console.log(err);
-                    });
+                    this.callSendAPI(partnerId, response);
+                })
+                .catch(() => {
+                    console.log(err);
+                });
         } else if (_.startsWith(payload, "ACCEPT")) {
             const partnerId = payload.split(" ")[1];
 
             Patient.findOneAndUpdate({
                 fbId: partnerId
             }, {
-                $set: {
-                    chatWith: user.fbId
-                }
-            }).then((doc) => {
-                return Patient.findOneAndUpdate({
-                    fbId: user.fbId
-                }, {
                     $set: {
-                        chatWith: partnerId
+                        chatWith: user.fbId
                     }
+                }).then((doc) => {
+                    return Patient.findOneAndUpdate({
+                        fbId: user.fbId
+                    }, {
+                            $set: {
+                                chatWith: partnerId
+                            }
+                        });
+                }).then((doc) => {
+                    console.log(doc);
+
+                    response = {
+                        "text": "You can start chatting now"
+                    };
+
+                    this.callSendAPI(user.fbId, response);
+                    this.callSendAPI(partnerId, response);
+                }).catch((err) => {
+                    console.log(err);
                 });
-            }).then((doc) => {
-                console.log(doc);
-
-                response = {
-                    "text": "You can start chatting now"
-                };
-
-                this.callSendAPI(user.fbId, response);
-                this.callSendAPI(partnerId, response);
+        } else if (_.startsWith(payload, "Question")) {
+            Patient.findByIdAndUpdate(user._id, {
+                $push:{
+                    answers: payload.split(" ")[1]
+                }
+            }, {new: true}).then((patient) => {
+                if (patient.answers.length === 8) {
+                    return;
+                }
+                this.askQuestion(user);
             }).catch((err) => {
                 console.log(err);
             });
