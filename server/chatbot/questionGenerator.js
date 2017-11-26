@@ -200,11 +200,6 @@ const questions = [{
                             "type": "postback",
                             "title": "3",
                             "payload": "Question7 3"
-                        },
-                        {
-                            "type": "postback",
-                            "title": "4",
-                            "payload": "Question7 4"
                         }
                     ]
                 }
