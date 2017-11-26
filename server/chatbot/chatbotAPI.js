@@ -91,6 +91,7 @@ const chatbotApi = {
     },
 
     askQuestion: function (user) {
+        console.log('Answer', user.answers.length);
         response = questionGenerator.generate(user.answers.length);
 
         this.callSendAPI(user.fbId, response);
