@@ -9,7 +9,16 @@ const chatbotApi = {
         console.log(receivedMessage);
 
         let response;
-        if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
+
+        if (user.chatWith) {
+            response = {
+                "text": `${user.chatWith}> ${receivedMessage.text}`
+            };
+
+            this.callSendAPI(user.chatWith, response);
+            return;
+        }
+        else if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
 
             const entities = receivedMessage.nlp.entities;
             console.log(entities);
@@ -164,7 +173,33 @@ const chatbotApi = {
                         console.log(err);
                     });
         } else if (_.startsWith(payload, "ACCEPT")) {
+            const partnerId = payload.split(" ")[1];
 
+            Patient.findOneAndUpdate({
+                fbId: partnerId
+            }, {
+                $set: {
+                    chatWith: user.nickname
+                }
+            }).then((doc) => {
+                return Patient.findOneAndUpdate({
+                    fbId: user.fbId
+                }, {
+                    $set: {
+                        chatWith: partnerId
+                    }
+                });
+            }).then((doc) => {
+                console.log(doc);
+
+                response = {
+                    "text": "You can start chatting now"
+                };
+
+                this.callSendAPI(user.fbId, response);
+            }).catch((err) => {
+                console.log(err);
+            });
         }
     },
 
