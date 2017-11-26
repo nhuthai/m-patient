@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { server } = require('./../ml/server');
+
 const PatientSchema = new mongoose.Schema({
     fbId: {
         type: String,
@@ -33,7 +35,14 @@ PatientSchema.statics.findByFbId = function(fbId) {
 };
 
 PatientSchema.statics.findMatchingPatients = function(fbId) {
-    return this.findByFbId(fbId)
+    return this.find({})
+                .then((patients) => {
+                    console.log(patients);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+    /* return this.findByFbId(fbId)
                 .then((patient) => {
                     if (!patient) {
                         return Promise.reject();
@@ -44,7 +53,7 @@ PatientSchema.statics.findMatchingPatients = function(fbId) {
                         disease: patient.disease,
                         fbId: {$ne: patient.fbId} 
                     });
-                });
+                }); */
 }
 
 const Patient = mongoose.model('Patient', PatientSchema);

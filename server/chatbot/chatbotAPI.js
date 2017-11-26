@@ -5,6 +5,7 @@ const templateGenerator = require('./templateGenerator');
 const questionGenerator = require('./questionGenerator');
 const { Patient } = require('./../models/patient');
 
+
 const chatbotApi = {
     handleMessage: function (user, receivedMessage) {
         let response;
@@ -40,7 +41,7 @@ const chatbotApi = {
                         {
                             "type": "web_url",
                             "url": "https://www.messenger.com",
-                            "title": "Visit Messenger"
+                            "title": "See news"
                         },
 
                         {
@@ -50,7 +51,7 @@ const chatbotApi = {
                         }
                     ];
                     response = {
-                        "attachment": templateGenerator.getButtonTemplate("What do you want to do next?", buttons)
+                        "attachment": templateGenerator.getButtonTemplate("How can I help you with?", buttons)
                     };
                 } else {
                     response = {
@@ -88,7 +89,6 @@ const chatbotApi = {
     },
 
     askQuestion: function (user) {
-        console.log('Answer', user.answers.length);
         response = questionGenerator.generate(user.answers.length);
 
         this.callSendAPI(user.fbId, response);
@@ -102,12 +102,12 @@ const chatbotApi = {
         const senderPSID = user.fbId;
 
         if (payload === 'CONNECT_PAYLOAD') {
-            if (user.answers.length !== 8) {
+            if (user.answers.length !== questionGenerator.numberOfQuestions) {
                 this.askQuestion(user);
                 return;
             }
 
-            Patient.findMatchingPatients(user.fbId)
+            /* Patient.findMatchingPatients(user.fbId)
                 .then((patients) => {
                     if (!patients || patients.length === 0) {
                         return;
@@ -122,7 +122,6 @@ const chatbotApi = {
                                     {
                                         "title": "Welcome to Peter\'s Hats",
                                         "subtitle": "We\'ve got the right hat for everyone.",
-                                        "image_url": "https://image.ibb.co/dsNANm/7_test.png",
                                         "buttons": [
                                             {
                                                 "type": "postback",
@@ -152,7 +151,7 @@ const chatbotApi = {
                     this.callSendAPI(user.fbId, response);
                 }).catch((err) => {
                     console.log(err);
-                });
+                }); */
         } else if (_.startsWith(payload, "CHAT")) {
             const partnerId = payload.split(" ")[1];
 
@@ -208,15 +207,13 @@ const chatbotApi = {
                     console.log(err);
                 });
         } else if (_.startsWith(payload, "Question")) {
-            console.log('Goto question ', payload);
             Patient.findByIdAndUpdate(user._id, {
                 $push:{
                     answers: payload.split(" ")[1]
                 }
             }, {new: true}).then((patient) => {
-                console.log('Finish insertion');
-                console.log(patient.answers);
-                if (patient.answers.length === 8) {
+                if (patient.answers.length === questionGenerator.numberOfQuestions) {
+                    this.findMatchingPatients(patient._id);
                     return;
                 }
                 this.askQuestion(patient);
@@ -224,6 +221,10 @@ const chatbotApi = {
                 console.log(err);
             });
         }
+    },
+
+    findMatchingPatients: function() {
+        Patient.findMatchingPatients(user.fbId);
     },
 
     buildListReponse: function (list) {

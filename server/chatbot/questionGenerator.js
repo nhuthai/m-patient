@@ -183,22 +183,22 @@ const questions = [{
             "elements": [
                 {
                     "title": "Question 7",
-                    "subtitle": "What is your favorite image",
+                    "subtitle": "What is your favorite image(s)",
                     "image_url": "https://image.ibb.co/dsNANm/7_test.png",
                     "buttons": [
                         {
                             "type": "postback",
-                            "title": "1",
+                            "title": "a",
                             "payload": "Question7 1"
                         },
                         {
                             "type": "postback",
-                            "title": "2",
+                            "title": "b & d",
                             "payload": "Question7 2"
                         }, 
                         {
                             "type": "postback",
-                            "title": "3",
+                            "title": "c",
                             "payload": "Question7 3"
                         }
                     ]
@@ -237,7 +237,8 @@ const questions = [{
 const questionGenerator = {
     generate: function (numberOfAnsweredQuestions) {
         return questions[numberOfAnsweredQuestions];
-    }
+    },
+    numberOfQuestions: questions.length
 }
 
 module.exports = questionGenerator;
