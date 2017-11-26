@@ -208,11 +208,14 @@ const chatbotApi = {
                     console.log(err);
                 });
         } else if (_.startsWith(payload, "Question")) {
+            console.log('Goto question ', payload);
             Patient.findByIdAndUpdate(user._id, {
                 $push:{
                     answers: payload.split(" ")[1]
                 }
             }, {new: true}).then((patient) => {
+                console.log('Finish insertion');
+                console.log(patient.answers);
                 if (patient.answers.length === 8) {
                     return;
                 }
