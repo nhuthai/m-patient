@@ -38,7 +38,8 @@ PatientSchema.statics.findByFbId = function(fbId) {
 PatientSchema.statics.findMatchingPatients = function(user) {
     return this.find({_id: {$ne: user._id}})
                 .then((patients) => {
-                    const filterPatients = _.pick(patients, ['fbId', 'disease', 'psyScore']);
+                    const filterPatients = patients.map((patient) =>  _.pick(patient, ['fbId', 'disease', 'psyScore']));
+                    
                     console.log(JSON.stringify(filterPatients));
 
                     const res = server.getUser(user.answers, JSON.stringify(filterPatients));
