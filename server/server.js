@@ -38,7 +38,7 @@ app.get('/webhook', (req, res) => {
 });
 
 app.post('/webhook', getCurrentPatient, (req, res) => {
-    const { user, webhookEvent } = req.body;
+    const { user, webhookEvent } = req;
 
     if (webhookEvent.message) {
         chatbotAPI.handleMessage(user, webhookEvent.message);
