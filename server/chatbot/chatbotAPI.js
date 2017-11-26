@@ -56,7 +56,9 @@ const chatbotApi = {
                                     {
                                         "type": "postback",
                                         "title": "Connect you with someone",
-                                        "payload": "CONNECT_PAYLOAD"
+                                        "payload": {
+                                            action: "CONNECT_PAYLOAD"
+                                        }
                                     }
                                 ]
                             }
@@ -102,15 +104,14 @@ const chatbotApi = {
         let response;
 
         console.log(received_postback);
+        const { payload } = received_postback;
 
-        if (received_postback.payload === 'CONNECT_PAYLOAD') {
+        if (payload && payload.action === 'CONNECT_PAYLOAD') {
             Patient.findMatchingPatients(senderPSID)
                 .then((patients) => {
                     if (!patients) {
                         return;
                     }
-
-                    console.log('Num', patients.length);
 
                     response = {
                         "attachment": {
@@ -125,7 +126,10 @@ const chatbotApi = {
                                             {
                                                 "type": "postback",
                                                 "title": "Start Chatting",
-                                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                                "payload": {
+                                                    action: "DEVELOPER_DEFINED_PAYLOAD",
+                                                    data: patients[0].fbId
+                                                }
                                             }
                                         ]
                                     },
@@ -136,7 +140,10 @@ const chatbotApi = {
                                             {
                                                 "type": "postback",
                                                 "title": "Start Chatting",
-                                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                                "payload": {
+                                                    action: "DEVELOPER_DEFINED_PAYLOAD",
+                                                    data: patients[0].fbId
+                                                }
                                             }
                                         ]
                                     }
@@ -144,8 +151,6 @@ const chatbotApi = {
                             }
                         }
                     };
-
-                    console.log(response);
 
                     // Sends the response message
                     this.callSendAPI(senderPSID, response);
