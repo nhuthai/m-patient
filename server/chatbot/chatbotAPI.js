@@ -227,6 +227,8 @@ const chatbotApi = {
     findMatchingPatients: function (user) {
         Patient.findMatchingPatients(user)
             .then((patients) => {
+                console.log('Returned', patients);
+                
                 response = {
                     "attachment": {
                         "type": "template",
