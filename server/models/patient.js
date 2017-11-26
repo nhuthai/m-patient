@@ -34,38 +34,24 @@ const PatientSchema = new mongoose.Schema({
     }
 });
 
-PatientSchema.statics.findByFbId = function(fbId) {
-    return this.findOne({fbId});
+PatientSchema.statics.findByFbId = function (fbId) {
+    return this.findOne({ fbId });
 };
 
-PatientSchema.statics.findMatchingPatients = function(user) {
-    return this.find({_id: {$ne: user._id}})
-                .then((patients) => {
-                    console.log(patients);
-                    //const filterPatients = patients.map((patient) =>  JSON.stringify(_.pick(patient, ['fbId', 'disease', 'psyScore'])));
+PatientSchema.statics.findMatchingPatients = function (user) {
+    return this.find({ _id: { $ne: user._id } })
+        .then((patients) => {
+            console.log(patients);
+            //const filterPatients = patients.map((patient) =>  JSON.stringify(_.pick(patient, ['fbId', 'disease', 'psyScore'])));
 
-                    const filterPatients = patients.map((patient) => _.pick(patient, ['fbId', 'disease', 'psyScore']));
-                    
-                    console.log(filterPatients);
+            const filterPatients = patients.map((patient) => _.pick(patient, ['fbId', 'disease', 'nickname', 'psyScore']));
 
-                    const res = server.getUser(user.answers, filterPatients);
-                    console.log(res);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-    /* return this.findByFbId(fbId)
-                .then((patient) => {
-                    if (!patient) {
-                        return Promise.reject();
-                    }
 
-                    // find all patients with the same disease, but not the current user
-                    return this.find({
-                        disease: patient.disease,
-                        fbId: {$ne: patient.fbId} 
-                    });
-                }); */
+            return server.getUser(user.answers, filterPatients);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 }
 
 const Patient = mongoose.model('Patient', PatientSchema);

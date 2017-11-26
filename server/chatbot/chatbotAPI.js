@@ -225,7 +225,29 @@ const chatbotApi = {
     },
 
     findMatchingPatients: function(user) {
-        Patient.findMatchingPatients(user);
+        const matchingPatients = Patient.findMatchingPatients(user);
+
+        response = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": matchingPatients.map((patient) => {
+                        return {
+                            "title": patient.nickname,
+                            "subtitle": "He is a good match for you",
+                            "buttons": [
+                                {
+                                    "type": "postback",
+                                    "title": "Request to chat",
+                                    "payload": "CHAT " + patient.fbId
+                                }
+                            ]
+                        }
+                    })
+                }
+            }
+        };
     },
 
     buildListReponse: function (list) {
