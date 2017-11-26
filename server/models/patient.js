@@ -34,7 +34,7 @@ PatientSchema.statics.findByFbId = function(fbId) {
     return this.findOne({fbId});
 };
 
-PatientSchema.statics.findMatchingPatients = function(fbId) {
+PatientSchema.statics.findMatchingPatients = function(userId) {
     return this.find({})
                 .then((patients) => {
                     console.log(patients);
