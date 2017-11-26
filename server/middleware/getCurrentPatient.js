@@ -19,7 +19,7 @@ const getCurrentPatient = (req, res, next) => {
             .then((doc) => {
                 if (!doc) {
                     const patient = new Patient({
-                        fbId: senderPSID
+                        fbId: senderId
                     });
 
                     return patient.save();
