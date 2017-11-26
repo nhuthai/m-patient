@@ -4,6 +4,8 @@ const _ = require('lodash');
 
 const chatbotApi = {
     handleMessage: function (senderPSID, receivedMessage) {
+        console.log(receivedMessage);
+        
         Patient.findByFbId(senderPSID)
             .then((doc) => {
                 if (!doc) {
