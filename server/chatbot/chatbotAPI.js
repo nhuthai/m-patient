@@ -114,7 +114,7 @@ const chatbotApi = {
                                     {
                                         "title": "Welcome to Peter\'s Hats",
                                         "subtitle": "We\'ve got the right hat for everyone.",
-                                        "image_url": "https://image.ibb.co/g2XtOR/7_test.png",
+                                        "image_url": "https://image.ibb.co/dsNANm/7_test.png",
                                         "buttons": [
                                             {
                                                 "type": "postback",
@@ -126,7 +126,7 @@ const chatbotApi = {
                                     {
                                         "title": "Another person",
                                         "subtitle": "We\'ve got the right hat for everyone.",
-                                        "image_url": "https://image.ibb.co/g2XtOR/7_test.png",
+                                        "image_url": "https://image.ibb.co/dsNANm/7_test.png",
                                         "buttons": [
                                             {
                                                 "type": "postback",
