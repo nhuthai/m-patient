@@ -113,6 +113,8 @@ const chatbotApi = {
                         return;
                     }
 
+                    console.log('Num', patients.length);
+
                     response = {
                         "attachment": {
                             "type": "template",
@@ -126,10 +128,7 @@ const chatbotApi = {
                                             {
                                                 "type": "postback",
                                                 "title": "Start Chatting",
-                                                "payload": {
-                                                    action: "DEVELOPER_DEFINED_PAYLOAD",
-                                                    data: patients[0].fbId
-                                                }
+                                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
                                             }
                                         ]
                                     },
@@ -140,10 +139,7 @@ const chatbotApi = {
                                             {
                                                 "type": "postback",
                                                 "title": "Start Chatting",
-                                                "payload": {
-                                                    action: "DEVELOPER_DEFINED_PAYLOAD",
-                                                    data: patients[0].fbId
-                                                }
+                                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
                                             }
                                         ]
                                     }
@@ -151,6 +147,8 @@ const chatbotApi = {
                             }
                         }
                     };
+
+                    console.log(response);
 
                     // Sends the response message
                     this.callSendAPI(senderPSID, response);
