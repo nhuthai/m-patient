@@ -205,6 +205,9 @@ const chatbotApi = {
                         }
                     }
                 };
+            })
+            .catch((err) => {
+                console.log(err);
             });
 
     },
