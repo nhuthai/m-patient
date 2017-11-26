@@ -1,5 +1,3 @@
-import { lchmod } from 'fs';
-
 const mongoose = require('mongoose');
 
 const { server } = require('./../ml/server');
