@@ -111,6 +111,7 @@ const chatbotApi = {
                         return;
                     }
 
+                    console.log('Patients', patients);
                     response = {
                         "attachment": {
                             "type": "template",
