@@ -16,9 +16,11 @@ const chatbotApi = {
                 const intent = entities.intent[0];
                 if (intent.value === "talk_action" && intent.confidence > 0.6) {
                     // Create the payload for a basic text message
-                    response = {
-                        "text": `Ok, set up the chat with ${entities.person[0].value}`
-                    };
+                    if (entities.person) {
+                        response = {
+                            "text": `Ok, set up the chat with ${entities.person[0].value}`
+                        };
+                    }    
                 }
             }
         }
