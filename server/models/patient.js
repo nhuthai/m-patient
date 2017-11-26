@@ -35,6 +35,7 @@ PatientSchema.statics.findMatchingPatients = function(fbId) {
                         return Promise.reject();
                     }
 
+                    // find all patients with the same disease, but not the current user
                     return this.find({
                         disease: patient.disease,
                         fbId: {$ne: patient.fbId} 

@@ -103,9 +103,9 @@ const chatbotApi = {
     handlePostback: function (senderPSID, received_postback) {
         let response;
 
-        console.log(received_postback);
+        const payload = received_postback.payload;
 
-        if (received_postback.payload === 'CONNECT_PAYLOAD') {
+        if (payload === 'CONNECT_PAYLOAD') {
             Patient.findMatchingPatients(senderPSID)
                 .then((patients) => {
                     if (!patients) {
@@ -154,6 +154,39 @@ const chatbotApi = {
                 }).catch((err) => {
                     console.log(err);
                 });
+        } else if (_.startWith(payload, "CHAT")) {
+            const partnerId = payload.split(" ")[1];
+
+            Patient.findByFbId(partnerId)
+                    .then((partner) => {
+                        response = {
+                            "attachment": {
+                                "type": "template",
+                                "payload": {
+                                    "template_type": "button",
+                                    "text": "There's someone wanting to talk to you",
+                                    "buttons": [
+                                        {
+                                            "type": "postback",
+                                            "title": "Accept",
+                                            "payload": "ACCEPT " + senderPSID
+                                        },
+    
+                                        {
+                                            "type": "postback",
+                                            "title": "Decline",
+                                            "payload": "DECLINE " + senderPSID
+                                        }
+                                    ]
+                                }
+                            }
+                        };
+
+                        this.callSendAPI(partnerId, response);
+                    })
+                    .catch(() => {
+                        console.log(err);
+                    });
         }
     },
 
@@ -161,7 +194,6 @@ const chatbotApi = {
         return list.map((item) => {
             return {
                 "title": item.nickname,
-                "image_url": "https://petersfancybrownhats.com/company_image.png",
                 "subtitle": "We\'ve got the right hat for everyone.",
                 "buttons": [
                     {
