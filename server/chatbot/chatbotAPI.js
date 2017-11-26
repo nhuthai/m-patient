@@ -99,7 +99,7 @@ const chatbotApi = {
         if (payload === 'CONNECT_PAYLOAD') {
             Patient.findMatchingPatients(user.fbId)
                 .then((patients) => {
-                    if (!patients) {
+                    if (!patients || patients.length === 0) {
                         return;
                     }
 
