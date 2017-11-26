@@ -209,10 +209,10 @@ const chatbotApi = {
                 });
         } else if (_.startsWith(payload, "Question")) {
             Patient.findByIdAndUpdate(user._id, {
-                $push:{
+                $push: {
                     answers: payload.split(" ")[1]
                 }
-            }, {new: true}).then((patient) => {
+            }, { new: true }).then((patient) => {
                 if (patient.answers.length === questionGenerator.numberOfQuestions) {
                     this.findMatchingPatients(patient);
                     return;
@@ -224,30 +224,37 @@ const chatbotApi = {
         }
     },
 
-    findMatchingPatients: function(user) {
-        const matchingPatients = Patient.findMatchingPatients(user);
-
-        response = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": matchingPatients.map((patient) => {
-                        return {
-                            "title": patient.nickname,
-                            "subtitle": "He is a good match for you",
-                            "buttons": [
-                                {
-                                    "type": "postback",
-                                    "title": "Request to chat",
-                                    "payload": "CHAT " + patient.fbId
+    findMatchingPatients: function (user) {
+        Patient.findMatchingPatients(user)
+            .then((patients) => {
+                response = {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": matchingPatients.map((patient) => {
+                                return {
+                                    "title": patient.nickname,
+                                    "subtitle": "He is a good match for you",
+                                    "buttons": [
+                                        {
+                                            "type": "postback",
+                                            "title": "Request to chat",
+                                            "payload": "CHAT " + patient.fbId
+                                        }
+                                    ]
                                 }
-                            ]
+                            })
                         }
-                    })
-                }
-            }
-        };
+                    }
+                };
+
+                this.callSendAPI(user.fbId, response);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
     },
 
     buildListReponse: function (list) {
