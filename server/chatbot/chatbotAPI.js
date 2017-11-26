@@ -7,8 +7,6 @@ const { Patient } = require('./../models/patient');
 
 const chatbotApi = {
     handleMessage: function (user, receivedMessage) {
-        console.log(receivedMessage);
-
         let response;
 
         if (user.chatWith) {
@@ -22,7 +20,6 @@ const chatbotApi = {
         else if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
 
             const entities = receivedMessage.nlp.entities;
-            console.log(entities);
 
             if (entities.intent && entities.intent.length > 0) {
                 const intent = entities.intent[0];
@@ -116,8 +113,6 @@ const chatbotApi = {
                         return;
                     }
 
-                    console.log('Num', patients.length);
-
                     response = {
                         "attachment": {
                             "type": "template",
@@ -152,8 +147,6 @@ const chatbotApi = {
                             }
                         }
                     };
-
-                    console.log(response);
 
                     // Sends the response message
                     this.callSendAPI(user.fbId, response);
@@ -205,8 +198,6 @@ const chatbotApi = {
                             }
                         });
                 }).then((doc) => {
-                    console.log(doc);
-
                     response = {
                         "text": "You can start chatting now"
                     };
