@@ -97,7 +97,27 @@ const chatbotApi = {
         const senderPSID = user.fbId;
 
         if (payload === 'CONNECT_PAYLOAD') {
-            Patient.findMatchingPatients(user.fbId)
+            response = {
+                "payload": {
+                    "template_type":"generic",
+                    "elements":[
+                       {
+                        "title":"<TITLE_TEXT>",
+                        "image_url":"<IMAGE_URL_TO_DISPLAY>",
+                        "subtitle":"<SUBTITLE_TEXT>",
+                        "buttons":[
+                            {
+                                "type":"postback",
+                                "title":"Start Chatting",
+                                "payload":"DEVELOPER_DEFINED_PAYLOAD"
+                              }  
+                        ]      
+                      }
+                    ]
+                  }
+            };
+
+            /* Patient.findMatchingPatients(user.fbId)
                 .then((patients) => {
                     if (!patients || patients.length === 0) {
                         return;
@@ -146,7 +166,7 @@ const chatbotApi = {
                     this.callSendAPI(user.fbId, response);
                 }).catch((err) => {
                     console.log(err);
-                });
+                }); */
         } else if (_.startsWith(payload, "CHAT")) {
             const partnerId = payload.split(" ")[1];
 
