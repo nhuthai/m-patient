@@ -5,7 +5,7 @@ const _ = require('lodash');
 const chatbotApi = {
     handleMessage: function (senderPSID, receivedMessage) {
         console.log(receivedMessage);
-        
+
         Patient.findByFbId(senderPSID)
             .then((doc) => {
                 if (!doc) {
@@ -20,7 +20,7 @@ const chatbotApi = {
                 console.log('Save successfully', doc);
             })
             .catch((err) => {
-                console.lof('Unable to save', err);
+                console.log('Unable to save', err);
             });
 
         let response;
@@ -127,7 +127,9 @@ const chatbotApi = {
                                             {
                                                 "type": "postback",
                                                 "title": "Start Chatting",
-                                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                                "payload": {
+                                                    "action": "DEVELOPER_DEFINED_PAYLOAD"
+                                                }
                                             }
                                         ]
                                     },
@@ -138,7 +140,9 @@ const chatbotApi = {
                                             {
                                                 "type": "postback",
                                                 "title": "Start Chatting",
-                                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                                "payload": {
+                                                    "action": "DEVELOPER_DEFINED_PAYLOAD"
+                                                }
                                             }
                                         ]
                                     }
@@ -154,6 +158,8 @@ const chatbotApi = {
                 }).catch((err) => {
                     console.log(err);
                 });
+        } else if (received_postback.payload.action === "DEVELOPER_DEFINED_PAYLOAD") {
+            console.log('Should be here');
         }
     },
 
