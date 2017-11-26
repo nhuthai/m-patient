@@ -179,7 +179,7 @@ const chatbotApi = {
                 fbId: partnerId
             }, {
                 $set: {
-                    chatWith: user.nickname
+                    chatWith: user.fbId
                 }
             }).then((doc) => {
                 return Patient.findOneAndUpdate({
@@ -197,6 +197,7 @@ const chatbotApi = {
                 };
 
                 this.callSendAPI(user.fbId, response);
+                this.callSendAPI(partnerId, response);
             }).catch((err) => {
                 console.log(err);
             });
