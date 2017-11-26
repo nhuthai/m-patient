@@ -13,7 +13,7 @@ const chatbotApi = {
         let response;
         const partner = user.chatWith;
 
-        if (receivedMessage.toLowerCase() === 'end conversation') {
+        if (receivedMessage.text.toLowerCase() === 'end conversation') {
             Patient.findOneAndUpdate({
                 _id: user._id
             }, {$set: {chatWith: null}}).then(() => {
