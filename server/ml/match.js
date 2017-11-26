@@ -32,7 +32,7 @@ function match_psy(arr, psyScore){
     if (filtered_arr.length > 0){
         arr = filtered_arr;
     }
-    return getBestmatch(arr);
+    return arr;
 }
 
 function match_disease(arr, disease){
