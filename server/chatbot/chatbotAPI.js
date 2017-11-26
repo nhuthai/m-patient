@@ -4,23 +4,19 @@ const _ = require('lodash');
 const templateGenerator = require('./templateGenerator');
 const questionGenerator = require('./questionGenerator');
 const { Patient } = require('./../models/patient');
-
+const newsFetcher = require('./newsFetcher');
 
 const chatbotApi = {
     handleMessage: function (user, receivedMessage) {
         let response;
 
         if (user.chatWith) {
-            Patient.findOne({
-                fbId: user.chatWith
-            }).then((partner) => {
-                response = {
-                    "text": `${partner.nickname}> ${receivedMessage.text}`
-                };
+            response = {
+                "text": `${user.nickname}> ${receivedMessage.text}`
+            };
 
-                this.callSendAPI(user.chatWith, response);
-                return;
-            });
+            this.callSendAPI(user.chatWith, response);
+            return;
         }
         else if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
 
@@ -43,9 +39,9 @@ const chatbotApi = {
                 if (receivedMessage.text === "Show me") {
                     const buttons = [
                         {
-                            "type": "web_url",
-                            "url": "https://www.messenger.com",
-                            "title": "See news"
+                            "type": "postback",
+                            "title": "See news",
+                            "payload": "SEE_NEWS"
                         },
 
                         {
@@ -179,6 +175,10 @@ const chatbotApi = {
                 this.askQuestion(patient);
             }).catch((err) => {
                 console.log(err);
+            });
+        } else if (payload === 'SEE_NEWS') {
+            newsFetcher.fetch((news) => {
+
             });
         }
     },
