@@ -224,7 +224,7 @@ const chatbotApi = {
                 if (patient.answers.length === 8) {
                     return;
                 }
-                this.askQuestion(user);
+                this.askQuestion(patient);
             }).catch((err) => {
                 console.log(err);
             });
