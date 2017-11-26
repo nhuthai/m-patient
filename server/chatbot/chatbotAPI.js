@@ -3,25 +3,8 @@ const { Patient } = require('./../models/patient');
 const _ = require('lodash');
 
 const chatbotApi = {
-    handleMessage: function (senderPSID, receivedMessage) {
+    handleMessage: function (user, receivedMessage) {
         console.log(receivedMessage);
-
-        Patient.findByFbId(senderPSID)
-            .then((doc) => {
-                if (!doc) {
-                    const patient = new Patient({
-                        fbId: senderPSID
-                    });
-
-                    return patient.save();
-                }
-            })
-            .then((doc) => {
-                console.log('Save successfully', doc);
-            })
-            .catch((err) => {
-                console.log('Unable to save', err);
-            });
 
         let response;
         if (receivedMessage.nlp && !_.isEmpty(receivedMessage.nlp.entities)) {
@@ -73,7 +56,7 @@ const chatbotApi = {
         }
 
         // Sends the response message
-        this.callSendAPI(senderPSID, response);
+        this.callSendAPI(user.fbId, response);
     },
 
     callSendAPI: function (senderPSID, response) {
@@ -100,13 +83,14 @@ const chatbotApi = {
     },
 
     // Handles messaging_postbacks events
-    handlePostback: function (senderPSID, received_postback) {
+    handlePostback: function (user, received_postback) {
         let response;
 
         const payload = received_postback.payload;
+        const senderPSID = user.fbId;
 
         if (payload === 'CONNECT_PAYLOAD') {
-            Patient.findMatchingPatients(senderPSID)
+            Patient.findMatchingPatients(user.fbId)
                 .then((patients) => {
                     if (!patients) {
                         return;
@@ -150,7 +134,7 @@ const chatbotApi = {
                     console.log(response);
 
                     // Sends the response message
-                    this.callSendAPI(senderPSID, response);
+                    this.callSendAPI(user.fbId, response);
                 }).catch((err) => {
                     console.log(err);
                 });
@@ -164,7 +148,7 @@ const chatbotApi = {
                                 "type": "template",
                                 "payload": {
                                     "template_type": "button",
-                                    "text": "There's someone wanting to talk to you",
+                                    "text": `${user.nickname} wants to talk to you`,
                                     "buttons": [
                                         {
                                             "type": "postback",
@@ -187,10 +171,12 @@ const chatbotApi = {
                     .catch(() => {
                         console.log(err);
                     });
+        } else if (_.startsWith(payload, "ACCEPT")) {
+
         }
     },
 
-    buildListReponse: function (list = []) {
+    buildListReponse: function (list) {
         return list.map((item) => {
             return {
                 "title": item.nickname,
