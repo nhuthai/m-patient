@@ -35,7 +35,6 @@ PatientSchema.statics.findMatchingPatients = function(fbId) {
                         return Promise.reject();
                     }
 
-                    console.log(patient);
                     return this.find({
                         disease: patient.disease
                     });
