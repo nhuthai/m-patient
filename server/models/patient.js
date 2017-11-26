@@ -42,11 +42,11 @@ PatientSchema.statics.findMatchingPatients = function(user) {
     return this.find({_id: {$ne: user._id}})
                 .then((patients) => {
                     console.log(patients);
-                    const filterPatients = patients.map((patient) =>  _.pick(patient, ['fbId', 'disease', 'psyScore']));
+                    const filterPatients = patients.map((patient) =>  JSON.stringify(_.pick(patient, ['fbId', 'disease', 'psyScore'])));
                     
-                    console.log(JSON.stringify(filterPatients));
+                    console.log(filterPatients);
 
-                    const res = server.getUser(user.answers, JSON.stringify(filterPatients));
+                    const res = server.getUser(user.answers, filterPatients);
                     console.log(res);
                 })
                 .catch((err) => {
