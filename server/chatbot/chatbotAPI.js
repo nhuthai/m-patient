@@ -105,7 +105,7 @@ const chatbotApi = {
                         "elements":[
                            {
                             "title":"<TITLE_TEXT>",
-                            "image_url":"<IMAGE_URL_TO_DISPLAY>",
+                            "image_url":"https://image.ibb.co/dsNANm/7_test.png>",
                             "subtitle":"<SUBTITLE_TEXT>",
                             "buttons":[
                                 {
