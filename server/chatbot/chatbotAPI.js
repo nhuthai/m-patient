@@ -1,6 +1,8 @@
 const request = require('request');
-const { Patient } = require('./../models/patient');
 const _ = require('lodash');
+
+const templateGenerator = require('./templateGenerator');
+const { Patient } = require('./../models/patient');
 
 const chatbotApi = {
     handleMessage: function (user, receivedMessage) {
@@ -27,27 +29,21 @@ const chatbotApi = {
         else {
             if (receivedMessage.text) {
                 if (receivedMessage.text === "Show me") {
-                    response = {
-                        "attachment": {
-                            "type": "template",
-                            "payload": {
-                                "template_type": "button",
-                                "text": "What do you want to do next?",
-                                "buttons": [
-                                    {
-                                        "type": "web_url",
-                                        "url": "https://www.messenger.com",
-                                        "title": "Visit Messenger"
-                                    },
+                    const buttons = [
+                        {
+                            "type": "web_url",
+                            "url": "https://www.messenger.com",
+                            "title": "Visit Messenger"
+                        },
 
-                                    {
-                                        "type": "postback",
-                                        "title": "Connect you with someone",
-                                        "payload": "CONNECT_PAYLOAD"
-                                    }
-                                ]
-                            }
+                        {
+                            "type": "postback",
+                            "title": "Connect you with someone",
+                            "payload": "CONNECT_PAYLOAD"
                         }
+                    ];
+                    response = {
+                        "attachment": templateGenerator.getButtonTemplate("What do you want to do next?", buttons)
                     };
                 } else {
                     response = {
@@ -145,27 +141,21 @@ const chatbotApi = {
 
             Patient.findByFbId(partnerId)
                     .then((partner) => {
-                        response = {
-                            "attachment": {
-                                "type": "template",
-                                "payload": {
-                                    "template_type": "button",
-                                    "text": `${user.nickname} wants to talk to you`,
-                                    "buttons": [
-                                        {
-                                            "type": "postback",
-                                            "title": "Accept",
-                                            "payload": "ACCEPT " + senderPSID
-                                        },
-    
-                                        {
-                                            "type": "postback",
-                                            "title": "Decline",
-                                            "payload": "DECLINE " + senderPSID
-                                        }
-                                    ]
-                                }
+                        const buttons = [
+                            {
+                                "type": "postback",
+                                "title": "Accept",
+                                "payload": "ACCEPT " + senderPSID
+                            },
+
+                            {
+                                "type": "postback",
+                                "title": "Decline",
+                                "payload": "DECLINE " + senderPSID
                             }
+                        ];
+                        response = {
+                            "attachment": templateGenerator.getButtonTemplate(`${user.nickname} wants to talk to you`, buttons)
                         };
 
                         this.callSendAPI(partnerId, response);
