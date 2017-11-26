@@ -154,7 +154,7 @@ const chatbotApi = {
                 }).catch((err) => {
                     console.log(err);
                 });
-        } else if (_.startWith(payload, "CHAT")) {
+        } else if (_.startsWith(payload, "CHAT")) {
             const partnerId = payload.split(" ")[1];
 
             Patient.findByFbId(partnerId)
