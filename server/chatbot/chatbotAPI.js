@@ -110,25 +110,39 @@ const chatbotApi = {
                         return;
                     }
 
+                    console.log('Num', patients.length);
+
                     response = {
                         "attachment": {
                             "type": "template",
                             "payload": {
                                 "template_type": "generic",
-                                "elements":[
+                                "elements": [
                                     {
-                                     "title":"Welcome to Peter\'s Hats",
-                                     "image_url":"https://petersfancybrownhats.com/company_image.png",
-                                     "subtitle":"We\'ve got the right hat for everyone.",
-                                     "buttons":[
-                                        {
-                                         "type":"postback",
-                                         "title":"Start Chatting",
-                                         "payload":"DEVELOPER_DEFINED_PAYLOAD"
-                                       }              
-                                     ]      
-                                   }
-                                 ]
+                                        "title": "Welcome to Peter\'s Hats",
+                                        "image_url": "https://petersfancybrownhats.com/company_image.png",
+                                        "subtitle": "We\'ve got the right hat for everyone.",
+                                        "buttons": [
+                                            {
+                                                "type": "postback",
+                                                "title": "Start Chatting",
+                                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": "Another person",
+                                        "image_url": "https://petersfancybrownhats.com/company_image.png",
+                                        "subtitle": "We\'ve got the right hat for everyone.",
+                                        "buttons": [
+                                            {
+                                                "type": "postback",
+                                                "title": "Start Chatting",
+                                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         }
                     };
@@ -143,7 +157,7 @@ const chatbotApi = {
         }
     },
 
-    buildListReponse: function(list = []) {
+    buildListReponse: function (list = []) {
         return list.map((item) => {
             return {
                 "title": item.nickname,

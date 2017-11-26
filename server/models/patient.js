@@ -36,7 +36,8 @@ PatientSchema.statics.findMatchingPatients = function(fbId) {
                     }
 
                     return this.find({
-                        disease: patient.disease
+                        disease: patient.disease,
+                        fbId: {$ne: patient.fbId} 
                     });
                 });
 }
