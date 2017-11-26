@@ -9,7 +9,7 @@ const newsFetcher = require('./newsFetcher');
 const chatbotApi = {
     handleMessage: function (user, receivedMessage) {
         console.log(receivedMessage);
-        
+
         let response;
 
         if (user.chatWith) {
@@ -33,6 +33,30 @@ const chatbotApi = {
                             "text": `Ok, set up the chat with ${entities.person[0].value}`
                         };
                     }
+                } else if (intent.value === "share_disease_action" && intent.confidence > 0.6) {
+                    if (entities.disease) {
+                        const disease = entities.disease[0].value;
+
+                        Patient.findOneAndUpdate(user._id, {
+                            $set: {
+                                disease: disease
+                            }
+                        }).then(() => {
+                            response = {
+                                "text": `I'm so sorry to hear that you have ${disease}. There are a couple things I can offer to you. Type 'Show me' to learn more`
+                            };
+                        }).catch((err) => {
+                            console.log(err);
+                        });
+                    }
+                }
+            } else if (entities.greetings && entities.greetings.length > 0) {
+                const greeting = entities.greetings[0];
+
+                if (greeting.value === "true") {
+                    response = {
+                        "text": `Hi, how can I help you?`
+                    };
                 }
             }
         }
@@ -48,7 +72,7 @@ const chatbotApi = {
 
                         {
                             "type": "postback",
-                            "title": "Connect you with someone",
+                            "title": "Connect me",
                             "payload": "CONNECT_PAYLOAD"
                         }
                     ];
