@@ -1,6 +1,9 @@
+import { lchmod } from 'fs';
+
 const mongoose = require('mongoose');
 
 const { server } = require('./../ml/server');
+const _ = require('lodash');
 
 const PatientSchema = new mongoose.Schema({
     fbId: {
@@ -34,10 +37,14 @@ PatientSchema.statics.findByFbId = function(fbId) {
     return this.findOne({fbId});
 };
 
-PatientSchema.statics.findMatchingPatients = function(userId) {
-    return this.find({})
+PatientSchema.statics.findMatchingPatients = function(user) {
+    return this.find({_id: {$ne: user._id}})
                 .then((patients) => {
-                    console.log(patients);
+                    const filterPatients = _.pick(patients, ['fbId', 'disease', 'psyScore']);
+                    console.log(JSON.stringify(filterPatients));
+
+                    const res = server.getUser(user.answers, JSON.stringify(filterPatients));
+                    console.log(res);
                 })
                 .catch((err) => {
                     console.log(err);

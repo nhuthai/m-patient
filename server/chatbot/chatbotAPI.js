@@ -107,7 +107,7 @@ const chatbotApi = {
                 return;
             }
 
-            this.findMatchingPatients(user._id);
+            this.findMatchingPatients(user);
             /* Patient.findMatchingPatients(user.fbId)
                 .then((patients) => {
                     if (!patients || patients.length === 0) {
@@ -214,7 +214,7 @@ const chatbotApi = {
                 }
             }, {new: true}).then((patient) => {
                 if (patient.answers.length === questionGenerator.numberOfQuestions) {
-                    this.findMatchingPatients(patient._id);
+                    this.findMatchingPatients(patient);
                     return;
                 }
                 this.askQuestion(patient);
@@ -224,8 +224,8 @@ const chatbotApi = {
         }
     },
 
-    findMatchingPatients: function(userId) {
-        Patient.findMatchingPatients(userId);
+    findMatchingPatients: function(user) {
+        Patient.findMatchingPatients(user);
     },
 
     buildListReponse: function (list) {
