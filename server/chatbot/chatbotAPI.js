@@ -127,9 +127,7 @@ const chatbotApi = {
                                             {
                                                 "type": "postback",
                                                 "title": "Start Chatting",
-                                                "payload": {
-                                                    "action": "DEVELOPER_DEFINED_PAYLOAD"
-                                                }
+                                                "payload": "CHAT " + patients[0].fbId
                                             }
                                         ]
                                     },
@@ -140,9 +138,7 @@ const chatbotApi = {
                                             {
                                                 "type": "postback",
                                                 "title": "Start Chatting",
-                                                "payload": {
-                                                    "action": "DEVELOPER_DEFINED_PAYLOAD"
-                                                }
+                                                "payload": "CHAT " + patients[0].fbId
                                             }
                                         ]
                                     }
@@ -158,8 +154,6 @@ const chatbotApi = {
                 }).catch((err) => {
                     console.log(err);
                 });
-        } else if (received_postback.payload.action === "DEVELOPER_DEFINED_PAYLOAD") {
-            console.log('Should be here');
         }
     },
 
