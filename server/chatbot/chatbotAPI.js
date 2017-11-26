@@ -6,8 +6,8 @@ const chatbotApi = {
     handleMessage: function (senderPSID, receivedMessage) {
 
         Patient.findByFbId(senderPSID)
-            .then((result) => {
-                if (!result) {
+            .then((doc) => {
+                if (!doc) {
                     const patient = new Patient({
                         fbId: senderPSID
                     });

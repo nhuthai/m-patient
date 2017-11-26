@@ -25,10 +25,7 @@ const PatientSchema = new mongoose.Schema({
 });
 
 PatientSchema.statics.findByFbId = function(fbId) {
-    return this.findOne({fbId})
-                .then((patient) => {
-                    return !!patient;
-                });
+    return this.findOne({fbId});
 };
 
 PatientSchema.statics.findMatchingPatients = function(fbId) {
