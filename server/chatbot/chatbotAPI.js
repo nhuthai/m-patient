@@ -107,7 +107,7 @@ const chatbotApi = {
                 return;
             }
 
-            this.findMatchingPatients(patient._id);
+            this.findMatchingPatients(user._id);
             /* Patient.findMatchingPatients(user.fbId)
                 .then((patients) => {
                     if (!patients || patients.length === 0) {
