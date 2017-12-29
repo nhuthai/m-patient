@@ -1,4 +1,4 @@
-function getBestMatch(arr){
+function getBestMatch(arr) {
     Math.seed = 6;
     Math.seededRandom = function(max, min) {
         max = max || 1;
@@ -16,30 +16,33 @@ function getBestMatch(arr){
 var threshold = 'b';
 
 function checkPsy(user) {
-    //g>d>b
     return user['psyScore'] > threshold;
 }
 
 var pattern = '';
 
-function checkDisease(user){
-    return user['disease'].trim().toLowerCase() == pattern.trim().toLowerCase();
+function refineString(str) {
+    return str.trim().toLocaleLowerCase();
 }
 
-function matchPsy(arr, psyScore){
+function checkDisease(user) {
+    return refineString(user['disease']) == refineString(pattern);
+}
+
+function matchPsy(arr, psyScore) {
     threshold = psyScore;
     var filtered_arr = arr.filter(checkPsy);
-    if (filtered_arr.length > 0){
+    if (filtered_arr.length > 0) {
         arr = filtered_arr;
     }
     return arr;
 }
 
-function matchDisease(arr, disease){
+function matchDisease(arr, disease) {
     console.log('arr', arr);
     pattern = disease;
     var filtered_arr = arr.filter(checkDisease);
-    if (filtered_arr.length > 0){
+    if (filtered_arr.length > 0) {
         arr = filtered_arr;
     }
     return arr;
