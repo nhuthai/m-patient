@@ -1,4 +1,4 @@
-function getBestmatch(arr){
+function getBestMatch(arr){
     Math.seed = 6;
     Math.seededRandom = function(max, min) {
         max = max || 1;
@@ -26,7 +26,7 @@ function checkDisease(user){
     return user['disease'].trim().toLowerCase() == pattern.trim().toLowerCase();
 }
 
-function match_psy(arr, psyScore){
+function matchPsy(arr, psyScore){
     threshold = psyScore;
     var filtered_arr = arr.filter(checkPsy);
     if (filtered_arr.length > 0){
@@ -35,7 +35,7 @@ function match_psy(arr, psyScore){
     return arr;
 }
 
-function match_disease(arr, disease){
+function matchDisease(arr, disease){
     console.log('arr', arr);
     pattern = disease;
     var filtered_arr = arr.filter(checkDisease);
@@ -45,4 +45,4 @@ function match_disease(arr, disease){
     return arr;
 }
 
-module.exports = {match_psy, match_disease};
+module.exports = {matchPsy, matchDisease};
