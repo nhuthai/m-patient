@@ -1,3 +1,6 @@
+var PATTERN = '';
+var THRESHOLD = 'b';
+
 function getBestMatch(arr) {
     Math.seed = 6;
     Math.seededRandom = function(max, min) {
@@ -10,41 +13,46 @@ function getBestMatch(arr) {
         return min + rnd * (max - min);
     }
 
-    return arr[Math.floor(Math.random()*arr.length)];
+    return arr[Math.floor(Math.random() * arr.length)];
 }
-
-var threshold = 'b';
-
-function checkPsy(user) {
-    return user['psyScore'] > threshold;
-}
-
-var pattern = '';
 
 function refineString(str) {
     return str.trim().toLocaleLowerCase();
 }
 
+function checkPsy(user) {
+    return user['psyScore'] > THRESHOLD;
+}
+
 function checkDisease(user) {
-    return refineString(user['disease']) == refineString(pattern);
+    return refineString(user['disease']) == refineString(PATTERN);
 }
 
 function matchPsy(arr, psyScore) {
-    threshold = psyScore;
+    if (psyScore !== undefined) {
+        THRESHOLD = psyScore;
+    }
+
     var filtered_arr = arr.filter(checkPsy);
+
     if (filtered_arr.length > 0) {
         arr = filtered_arr;
     }
+
     return arr;
 }
 
 function matchDisease(arr, disease) {
-    console.log('arr', arr);
-    pattern = disease;
+    if (disease !== undefined) {
+        PATTERN = disease;
+    }
+
     var filtered_arr = arr.filter(checkDisease);
+
     if (filtered_arr.length > 0) {
         arr = filtered_arr;
     }
+
     return arr;
 }
 
