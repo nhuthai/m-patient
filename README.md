@@ -7,6 +7,8 @@ https://oxfordhack2017.hackerearth.com/sprints/oxfordhack-2017/dashboard/1e65c2e
 
 ![alt text](https://he-s3.s3.amazonaws.com/media/sprint/oxfordhack-2017/team/306760/bf39b11screen_shot_2017_11_26_at_10_43_46_am.png)
 
+![alt text](https://he-s3.s3.amazonaws.com/media/sprint/oxfordhack-2017/team/306760/6c588fascreen_shot_2017_11_26_at_11_59_57_am.png)
+
 ## Motivation
 
 The aim of the project is to foster empathy between patients. According to recent research, patients usually feel isolated and lonely as they are embarrassed to talk about their feelings and struggles. This is also inspired by a story of our teammate whose father passed away of cancer a few years back. He also went through different stages of emotion. Obviously they need an air of compassion within the community.
